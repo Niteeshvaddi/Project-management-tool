@@ -505,83 +505,83 @@ class UserController extends Controller
     }
 
 
-    public function register(Request $request)
-    {
-        // Validate incoming request
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|regex:/^[^\d]+$/',
-            'last_name' => 'required|string|regex:/^[^\d]+$/',
-            'email' => [
-                'required',
-                'email',
-                'unique:users,email',
-                'unique:clients,email', // Check in both users and clients
-            ],
-            'phone' => [
-                'required',
-                'string',
-                'regex:/^\d+$/',
-                'unique:users,phone',
-            ],
-            'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required'
-        ], [
-            'first_name.required' => 'First name is required.',
-            'first_name.string' => 'First name must be a string.',
-            'first_name.regex' => 'First name cannot contain numbers.',
-            'last_name.required' => 'Last name is required.',
-            'last_name.string' => 'Last name must be a string.',
-            'last_name.regex' => 'Last name cannot contain numbers.',
-            'email.required' => 'Email is required.',
-            'email.email' => 'Invalid email format.',
-            'email.unique' => 'The email has already been taken in users or clients.',
-            'phone.required' => 'Phone number is required.',
-            'phone.string' => 'Phone number must be a string.',
-            'phone.unique' => 'The phone number has already been taken.',
-            'phone.regex' => 'Phone number can only contain digits.',
-            'password.required' => 'Password is required.',
-            'password.string' => 'Password must be a string.',
-            'password.min' => 'Password must be at least 6 characters long.',
-            'password.confirmed' => 'Password confirmation does not match.',
-        ]);
-
-        // Check if validation failed
-        if ($validator->fails()) {
-            return response()->json(['error' => true, 'message' => $validator->errors()], 422);
-        }
-
-        // Create a new user
-        $user = new User();
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->status = '1';
-        $user->email_verified_at = now()->tz(config('app.timezone'));
-        $user->save();
-
-        // Assign role to user
-        $user->assignRole('admin');
-
-        // Notify user if email configuration is set
-        if (isEmailConfigured()) {
-            $account_creation_template = Template::where('type', 'email')
-                ->where('name', 'account_creation')
-                ->first();
-
-            if (!$account_creation_template || $account_creation_template->status !== 0) {
-                $user->notify(new AccountCreation($user, $request->password));
-            }
-        }
-
-        // Create a new admin with the user ID
-        $admin = new Admin();
-        $admin->user_id = $user->id;
-        $admin->save();
-
-        return response()->json(['error' => false, 'message' => 'User registered successfully', 'redirect_url' => route('login')]);
-    }
+//    public function register(Request $request)
+//    {
+//        // Validate incoming request
+//        $validator = Validator::make($request->all(), [
+//            'first_name' => 'required|string|regex:/^[^\d]+$/',
+//            'last_name' => 'required|string|regex:/^[^\d]+$/',
+//            'email' => [
+//                'required',
+//                'email',
+//                'unique:users,email',
+//                'unique:clients,email', // Check in both users and clients
+//            ],
+//            'phone' => [
+//                'required',
+//                'string',
+//                'regex:/^\d+$/',
+//                'unique:users,phone',
+//            ],
+//            'password' => 'required|string|min:6|confirmed',
+//            'password_confirmation' => 'required'
+//        ], [
+//            'first_name.required' => 'First name is required.',
+//            'first_name.string' => 'First name must be a string.',
+//            'first_name.regex' => 'First name cannot contain numbers.',
+//            'last_name.required' => 'Last name is required.',
+//            'last_name.string' => 'Last name must be a string.',
+//            'last_name.regex' => 'Last name cannot contain numbers.',
+//            'email.required' => 'Email is required.',
+//            'email.email' => 'Invalid email format.',
+//            'email.unique' => 'The email has already been taken in users or clients.',
+//            'phone.required' => 'Phone number is required.',
+//            'phone.string' => 'Phone number must be a string.',
+//            'phone.unique' => 'The phone number has already been taken.',
+//            'phone.regex' => 'Phone number can only contain digits.',
+//            'password.required' => 'Password is required.',
+//            'password.string' => 'Password must be a string.',
+//            'password.min' => 'Password must be at least 6 characters long.',
+//            'password.confirmed' => 'Password confirmation does not match.',
+//        ]);
+//
+//        // Check if validation failed
+//        if ($validator->fails()) {
+//            return response()->json(['error' => true, 'message' => $validator->errors()], 422);
+//        }
+//
+//        // Create a new user
+//        $user = new User();
+//        $user->first_name = $request->first_name;
+//        $user->last_name = $request->last_name;
+//        $user->phone = $request->phone;
+//        $user->email = $request->email;
+//        $user->password = bcrypt($request->password);
+//        $user->status = '1';
+//        $user->email_verified_at = now()->tz(config('app.timezone'));
+//        $user->save();
+//
+//        // Assign role to user
+//        $user->assignRole('admin');
+//
+//        // Notify user if email configuration is set
+//        if (isEmailConfigured()) {
+//            $account_creation_template = Template::where('type', 'email')
+//                ->where('name', 'account_creation')
+//                ->first();
+//
+//            if (!$account_creation_template || $account_creation_template->status !== 0) {
+//                $user->notify(new AccountCreation($user, $request->password));
+//            }
+//        }
+//
+//        // Create a new admin with the user ID
+//        $admin = new Admin();
+//        $admin->user_id = $user->id;
+//        $admin->save();
+//
+//        return response()->json(['error' => false, 'message' => 'User registered successfully', 'redirect_url' => route('login')]);
+//    }
 
     public function show($id)
     {

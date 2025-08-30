@@ -21,7 +21,7 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">{{ get_label('your_name', 'Your Name') }}<span
                                  class="asterisk">*</span></label>
-                         
+
                             <input name="name" type="text" class="form-control" id="name"
                                 placeholder="{{ get_label('enter_your_name', 'Enter your name') }}">
                         </div>
@@ -45,7 +45,7 @@
                                     alt="Loading..."> --}}
                             </div>
                         </div>
-                    </form>
+                </form>
                 </div>
             </div>
         </div>

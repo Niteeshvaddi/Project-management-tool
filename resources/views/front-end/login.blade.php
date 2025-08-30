@@ -25,10 +25,12 @@
                             <a class="nav-link active" id="login-tab" data-bs-toggle="tab" href="#login" role="tab"
                                 aria-controls="login" aria-selected="true">{{ get_label('login', 'Login') }}</a>
                         </li>
+                        {{-- Register tab commented out to hide registration functionality
                         <li class="nav-item">
                             <a class="nav-link" id="register-tab" data-bs-toggle="tab" href="#register" role="tab"
                                 aria-controls="register" aria-selected="false">{{ get_label('register', 'Register') }}</a>
                         </li>
+                        --}}
                     </ul>
                     <div class="tab-content" id="auth-tab-content">
                         <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
@@ -108,6 +110,7 @@
                                 </div>
                             </div>
                         </div>
+                        {{-- Register tab content commented out to hide registration functionality
                         <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
                             <div class = "card">
                                 <div class = "card-body">
@@ -171,6 +174,7 @@
                                 </div>
                             </div>
                         </div>
+                        --}}
                     </div>
                 </div>
             </div>
